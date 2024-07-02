@@ -2,6 +2,12 @@
 Changelog for package turtlebot4_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix typo in rplidar.dae (`#320 <https://github.com/turtlebot/turtlebot4/issues/320>`)
+  Co-authored-by: Gaël Écorchard <gael@km-robotics.cz>
+* Contributors: Gaël Écorchard
+
 1.0.4 (2023-11-08)
 ------------------
 

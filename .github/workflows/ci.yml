@@ -3,7 +3,7 @@ name: turtlebot4_ci
 on: [push, pull_request]
 
 jobs:
-  turtlebot4_humble_ci:
+  turtlebot4_jazzy_ci:
     name: Jazzy
     runs-on: ubuntu-24.04
     steps:
@@ -14,7 +14,7 @@ jobs:
       - uses: ros-tooling/action-ros-ci@v0.3
         id: action_ros_ci_step
         with:
-          target-ros2-distro: humble
+          target-ros2-distro: jazzy
           import-token: ${{ secrets.GITHUB_TOKEN }}
           package-name:
             turtlebot4_description

@@ -2,8 +2,8 @@
 Changelog for package turtlebot4_navigation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2024-08-29)
+------------------
 * Update the SLAM launch file so it works with the latest version of slam_toolbox. Rather than re-impementing all of the launch file, just include the online_sync or online_async launch files as appropriate
 * Update nav2 launch configuration to work with the latest jazzy: syntax changes (/ -> ::)
 * Use TwistStamped messages for velocity controllers

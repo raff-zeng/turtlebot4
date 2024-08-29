@@ -27,10 +27,7 @@ from launch.actions import (
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-
-from launch_ros.actions import Node, PushRosNamespace, SetRemap
-
-from nav2_common.launch import RewrittenYaml
+from launch_ros.actions import PushRosNamespace, SetRemap
 
 pkg_turtlebot4_navigation = get_package_share_directory('turtlebot4_navigation')
 pkg_slam_toolbox = get_package_share_directory('slam_toolbox')
@@ -46,12 +43,12 @@ ARGUMENTS = [
                           description='Robot namespace'),
     DeclareLaunchArgument('autostart', default_value='true',
                           choices=['true', 'false'],
-                          description='Automatically startup the slamtoolbox. Ignored when use_lifecycle_manager is true.'),
+                          description='Automatically startup the slamtoolbox. Ignored when use_lifecycle_manager is true.'),  # noqa: E501
     DeclareLaunchArgument('use_lifecycle_manager', default_value='false',
                           choices=['true', 'false'],
                           description='Enable bond connection during node activation'),
     DeclareLaunchArgument('params',
-                          default_value=PathJoinSubstitution([pkg_turtlebot4_navigation, 'config', 'slam.yaml']),
+                          default_value=PathJoinSubstitution([pkg_turtlebot4_navigation, 'config', 'slam.yaml']),  # noqa: E501
                           description='Path to the SLAM Toolbox configuration file')
 ]
 
@@ -70,7 +67,7 @@ def launch_setup(context, *args, **kwargs):
 
     launch_slam_sync = PathJoinSubstitution(
         [pkg_slam_toolbox, 'launch', 'online_sync_launch.py'])
-    
+
     launch_slam_async = PathJoinSubstitution(
         [pkg_slam_toolbox, 'launch', 'online_async_launch.py'])
 
@@ -85,7 +82,7 @@ def launch_setup(context, *args, **kwargs):
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(launch_slam_sync),
-            launch_arguments = [
+            launch_arguments=[
                 ('use_sim_time', use_sim_time),
                 ('autostart', autostart),
                 ('use_lifecycle_manager', use_lifecycle_manager),
@@ -93,10 +90,10 @@ def launch_setup(context, *args, **kwargs):
             ],
             condition=IfCondition(sync)
         ),
-        
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(launch_slam_async),
-            launch_arguments = [
+            launch_arguments=[
                 ('use_sim_time', use_sim_time),
                 ('autostart', autostart),
                 ('use_lifecycle_manager', use_lifecycle_manager),
@@ -107,6 +104,7 @@ def launch_setup(context, *args, **kwargs):
     ])
 
     return [slam]
+
 
 def generate_launch_description():
     ld = LaunchDescription(ARGUMENTS)

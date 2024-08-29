@@ -2,6 +2,11 @@
 Changelog for package turtlebot4_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add base_footprint link to URDF
+* Contributors: Chris Iverach-Brereton
+
 1.0.5 (2024-07-02)
 ------------------
 * Fix typo in rplidar.dae (`#320 <https://github.com/turtlebot/turtlebot4/issues/320>`)

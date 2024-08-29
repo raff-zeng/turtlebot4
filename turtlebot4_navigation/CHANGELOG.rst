@@ -2,6 +2,16 @@
 Changelog for package turtlebot4_navigation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update the SLAM launch file so it works with the latest version of slam_toolbox. Rather than re-impementing all of the launch file, just include the online_sync or online_async launch files as appropriate
+* Update nav2 launch configuration to work with the latest jazzy: syntax changes (/ -> ::)
+* Use TwistStamped messages for velocity controllers
+* Use MPPIController for path follower plugin instead of DWMLocalPlanner
+* Assorted minor yaml formatting fixes (e.g. consistent caps for true & false)
+* Use base_footprint link as the tf base for slam & localization
+* Contributors: Chris Iverach-Brereton
+
 1.0.5 (2024-07-02)
 ------------------
 

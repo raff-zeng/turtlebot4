@@ -476,7 +476,7 @@ void Turtlebot4::undock_function_callback()
  */
 void Turtlebot4::wall_follow_left_function_callback()
 {
-  if (wall_follow_client_ != nullptr) {
+  if (wall_follow_client_ != nullptr && !is_docked_) {
     RCLCPP_INFO(this->get_logger(), "Wall Follow Left");
     auto goal_msg = std::make_shared<WallFollow::Goal>();
     auto runtime = builtin_interfaces::msg::Duration();
@@ -484,6 +484,8 @@ void Turtlebot4::wall_follow_left_function_callback()
     goal_msg->follow_side = WallFollow::Goal::FOLLOW_LEFT;
     goal_msg->max_runtime = runtime;
     wall_follow_client_->send_goal(goal_msg);
+  } else if (is_docked_) {
+    RCLCPP_ERROR(this->get_logger(), "Undock before following wall");
   } else {
     RCLCPP_ERROR(this->get_logger(), "Follow client NULL");
   }
@@ -494,7 +496,7 @@ void Turtlebot4::wall_follow_left_function_callback()
  */
 void Turtlebot4::wall_follow_right_function_callback()
 {
-  if (wall_follow_client_ != nullptr) {
+  if (wall_follow_client_ != nullptr && !is_docked_) {
     RCLCPP_INFO(this->get_logger(), "Wall Follow Right");
     auto goal_msg = std::make_shared<WallFollow::Goal>();
     auto runtime = builtin_interfaces::msg::Duration();
@@ -502,6 +504,8 @@ void Turtlebot4::wall_follow_right_function_callback()
     goal_msg->follow_side = WallFollow::Goal::FOLLOW_RIGHT;
     goal_msg->max_runtime = runtime;
     wall_follow_client_->send_goal(goal_msg);
+  } else if (is_docked_) {
+    RCLCPP_ERROR(this->get_logger(), "Undock before following wall");
   } else {
     RCLCPP_ERROR(this->get_logger(), "Follow client NULL");
   }

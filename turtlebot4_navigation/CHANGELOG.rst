@@ -2,8 +2,8 @@
 Changelog for package turtlebot4_navigation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.1 (2024-09-25)
+------------------
 * Revert to using base_link for navigation; the create3 uses that for odom, and using a different link appears to break slam_toolbox. Update the SLAM launch parameters
 * Contributors: Chris Iverach-Brereton
 

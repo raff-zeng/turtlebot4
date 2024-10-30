@@ -52,8 +52,8 @@ class TurtleBot4Navigator(BasicNavigator):
     is_docked = None
     creating_path = False
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, namespace=''):
+        super().__init__(namespace=namespace)
 
         self.create_subscription(DockStatus,
                                  'dock_status',

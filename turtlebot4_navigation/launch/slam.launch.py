@@ -14,7 +14,7 @@
 #
 # @author Roni Kreinin (rkreinin@clearpathrobotics.com)
 
-
+import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
@@ -45,54 +45,95 @@ def generate_launch_description():
     namespace = LaunchConfiguration('namespace')
     sync = LaunchConfiguration('sync')
 
-    slam_params_arg = DeclareLaunchArgument(
-        'params',
-        default_value=PathJoinSubstitution(
-            [pkg_turtlebot4_navigation, 'config', 'slam.yaml']),
-        description='Robot namespace')
+    # slam_params_arg = DeclareLaunchArgument(
+    #     'params',
+    #     default_value=PathJoinSubstitution(
+    #         [pkg_turtlebot4_navigation, 'config', 'slam.yaml']),
+    #     description='Robot namespace')
 
-    slam_params = RewrittenYaml(
-        source_file=LaunchConfiguration('params'),
-        root_key=namespace,
-        param_rewrites={},
-        convert_types=True
+    # slam_params = RewrittenYaml(
+    #     source_file=LaunchConfiguration('params'),
+    #     root_key=namespace,
+    #     param_rewrites={},
+    #     convert_types=True
+    # )
+
+    # remappings = [
+    #     ('/tf', 'tf'),
+    #     ('/tf_static', 'tf_static'),
+    #     ('/scan', 'scan'),
+    #     ('/map', 'map'),
+    #     ('/map_metadata', 'map_metadata'),
+    # ]
+
+    # slam = GroupAction([
+    #     PushRosNamespace(namespace),
+
+    #     Node(package='slam_toolbox',
+    #          executable='sync_slam_toolbox_node',
+    #          name='slam_toolbox',
+    #          output='screen',
+    #          parameters=[
+    #            slam_params,
+    #            {'use_sim_time': LaunchConfiguration('use_sim_time')}
+    #          ],
+    #          remappings=remappings,
+    #          condition=IfCondition(sync)),
+
+    #     Node(package='slam_toolbox',
+    #          executable='async_slam_toolbox_node',
+    #          name='slam_toolbox',
+    #          output='screen',
+    #          parameters=[
+    #            slam_params,
+    #            {'use_sim_time': LaunchConfiguration('use_sim_time')}
+    #          ],
+    #          remappings=remappings,
+    #          condition=UnlessCondition(sync))
+    # ])
+
+    # 获取cartographer配置文件路径
+    pkg_cartographer = get_package_share_directory('cartographer_ros')
+
+    # 定义启动参数
+    cartographer_config_dir = LaunchConfiguration('configuration_directory', 
+        default=os.path.join(pkg_cartographer, 'configuration_files'))
+    configuration_basename = LaunchConfiguration('configuration_basename',
+        default='turtlebot4.lua')
+
+    # 配置cartographer节点
+    cartographer_node = Node(
+        package='cartographer_ros',
+        executable='cartographer_node',
+        name='cartographer_node',
+        output='screen',
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+        arguments=[
+            '-configuration_directory', cartographer_config_dir,
+            '-configuration_basename', configuration_basename
+        ],
+        remappings=[
+            ('scan', '/scan'),
+            ('imu', '/imu'), 
+            ('odom', '/odom')
+        ]
     )
 
-    remappings = [
-        ('/tf', 'tf'),
-        ('/tf_static', 'tf_static'),
-        ('/scan', 'scan'),
-        ('/map', 'map'),
-        ('/map_metadata', 'map_metadata'),
-    ]
-
-    slam = GroupAction([
-        PushRosNamespace(namespace),
-
-        Node(package='slam_toolbox',
-             executable='sync_slam_toolbox_node',
-             name='slam_toolbox',
-             output='screen',
-             parameters=[
-               slam_params,
-               {'use_sim_time': LaunchConfiguration('use_sim_time')}
-             ],
-             remappings=remappings,
-             condition=IfCondition(sync)),
-
-        Node(package='slam_toolbox',
-             executable='async_slam_toolbox_node',
-             name='slam_toolbox',
-             output='screen',
-             parameters=[
-               slam_params,
-               {'use_sim_time': LaunchConfiguration('use_sim_time')}
-             ],
-             remappings=remappings,
-             condition=UnlessCondition(sync))
-    ])
+    # 配置occupancy grid节点
+    occupancy_grid_node = Node(
+        package='cartographer_ros',
+        executable='cartographer_occupancy_grid_node',
+        name='cartographer_occupancy_grid_node',
+        parameters=[
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
+            {'resolution': 0.05}
+        ]
+    )
 
     ld = LaunchDescription(ARGUMENTS)
-    ld.add_action(slam_params_arg)
-    ld.add_action(slam)
+    # ld.add_action(slam_params_arg)
+    # ld.add_action(slam)
+    ld.add_action(cartographer_node)
+    ld.add_action(occupancy_grid_node)
+
     return ld

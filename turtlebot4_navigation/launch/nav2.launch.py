@@ -64,6 +64,9 @@ def launch_setup(context, *args, **kwargs):
         PushRosNamespace(namespace),
         SetRemap(namespace_str + '/global_costmap/scan', namespace_str + '/scan'),
         SetRemap(namespace_str + '/local_costmap/scan', namespace_str + '/scan'),
+        # 添加地图话题重映射
+        SetRemap(namespace_str + 'map', '/map'),
+        SetRemap(namespace_str + 'map_metadata', '/map_metadata'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(launch_nav2),

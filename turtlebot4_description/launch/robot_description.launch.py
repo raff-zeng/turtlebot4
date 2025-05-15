@@ -26,10 +26,10 @@ from launch_ros.actions import Node
 
 
 ARGUMENTS = [
-    DeclareLaunchArgument('model', default_value='standard',
+    DeclareLaunchArgument('model', default_value='lite',
                           choices=['standard', 'lite'],
                           description='Turtlebot4 Model'),
-    DeclareLaunchArgument('use_sim_time', default_value='false',
+    DeclareLaunchArgument('use_sim_time', default_value='true',
                           choices=['true', 'false'],
                           description='use_sim_time'),
     DeclareLaunchArgument('robot_name', default_value='turtlebot4',

@@ -28,7 +28,7 @@ from nav2_common.launch import RewrittenYaml
 
 
 ARGUMENTS = [
-    DeclareLaunchArgument('use_sim_time', default_value='false',
+    DeclareLaunchArgument('use_sim_time', default_value='true',
                           choices=['true', 'false'],
                           description='Use sim time'),
     DeclareLaunchArgument('sync', default_value='true',
@@ -96,7 +96,7 @@ def generate_launch_description():
     pkg_cartographer = get_package_share_directory('cartographer_ros')
 
     # 定义启动参数
-    cartographer_config_dir = LaunchConfiguration('configuration_directory', 
+    cartographer_config_dir = LaunchConfiguration('configuration_directory',
         default=os.path.join(pkg_cartographer, 'configuration_files'))
     configuration_basename = LaunchConfiguration('configuration_basename',
         default='turtlebot4.lua')
@@ -114,7 +114,7 @@ def generate_launch_description():
         ],
         remappings=[
             ('scan', '/scan'),
-            ('imu', '/imu'), 
+            ('imu', '/imu'),
             ('odom', '/odom')
         ]
     )
